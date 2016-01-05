@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <title>Pong</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.13/p5.js"></script>
+    <script>
+        var ballX;
+        var ballY;
+        var ballSpeedX = 5;
+        var ballSpeedY = 5;
+        var paddleHeight = 30;// initializing the height of the paddle 
+        var paddleWidth = 200;// initializing the width of the paddle 
+        var score = 0;// when the game starts the score will start off as 0 
+        
+        
+        
+
+        function setup() {
+            createCanvas(800,600);
+            noCursor();
+            ballX = random(800); // the ball will start from any random x position when the game restarts
+            ballY = height / 2;
+        }
+
+        function draw() {
+            background(128);
+            moveBall();
+            checkCollide();
+            drawPaddle();
+            drawBall();
+            text ("score: "+score,10,20);// This will show the user what there score is and its placed in the top corner of the game
+            
+            
+        }
+
+        function moveBall() {
+            ballX = ballX + ballSpeedX;
+            ballY = ballY + ballSpeedY;
+
+            console.log("ballSpeedX: " + ballSpeedX + 
+                        ", ballSpeedY: " + ballSpeedY);
+        }
+
+        function checkCollide() {
+            if (ballX < 0 || ballX > width) {
+                ballSpeedX = ballSpeedX * -1;
+            }
+            if (ballY < 0) {
+                ballSpeedY = ballSpeedY * -1;
+            }
+            if (ballY > height - paddleHeight) {
+                if (ballX > mouseX && ballX < mouseX + paddleWidth) { // replace the number 200 with the variable paddleWidth so it can update everytime the paddle shrinks, this allows the width of the paddle to decrease
+                    ballSpeedY = ballSpeedY * -1;
+                    paddleWidth -= 10;// here the paddle width is subtracted by 10 everytime the ball touches it 
+                    score +=1;// everytime the ball touches the paddle the score increases by 1
+                     
+                }
+                else {
+                    text("GAME OVER!", width / 2, height / 2);
+                    noLoop();
+                }
+            }
+        }
+
+        function drawBall() {
+            noStroke();
+            fill(255,155,255);
+            ellipse(ballX, ballY, 20, 20);
+        }
+
+        function drawPaddle() {
+            strokeWeight(4);
+            rect(mouseX, height - paddleHeight - 4, paddleWidth, paddleHeight);// replace the number of the width and height with the variable, so when the ball touches the paddle it updates everytime
+        }
+        
+            
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
